@@ -2,7 +2,7 @@ import olxAppBanner from "../../assets/phone-app.webp";
 import appDownload from '../../assets/app-download.png'
 const Banner = () => {
   return (
-    <div className="w-screen bg-olx-gray my-8 ">
+    <div className=" bg-olx-gray my-8 ">
       <div className="container mx-auto flex justify-evenly flex-wrap items-center">
               <img src={olxAppBanner} />
               <div className="text-olx-green">

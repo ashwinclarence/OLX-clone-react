@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import olxLogo from "../../assets/OLX_green_logo.svg";
 
 const Navbar = () => {
   return (
-    <div className="p-4 bg-olx-gray flex justify-between">
+    <div className="p-4 bg-olx-gray flex justify-between items-center fixed top-0 w-full">
       <div className="overflow-hidden">
         <img src={olxLogo} className="w-14" />
       </div>
@@ -17,14 +18,24 @@ const Navbar = () => {
         <i className="fa-solid fa-chevron-down"></i>
       </div>
       {/* search bar */}
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center ">
         <input
           type="text"
-          className="outline-cyan-500 border-olx-green border-2 rounded bg-transparent w-[40rem] p-2"
+          className="outline-cyan-500 border-olx-green border-2 rounded bg-transparent w-[40rem] p-2 h-10"
           placeholder="Find Cars, Mobile Phones and more ..."
         />
-        <i className="fa-solid fa-magnifying-glass bg-olx-green text-white h-full p-2 flex items-center rounded"></i>
+        <i className="fa-solid fa-magnifying-glass bg-olx-green text-white p-2 flex items-center rounded h-10"></i>
       </div>
+      {/*  */}
+      <h2 className="text-lg font-semibold">
+        English <i className="fa-solid fa-chevron-down "></i>
+      </h2>
+      <Link to="/login" className="text-xl font-semibold">
+        login
+      </Link>
+      <button className="border-4 h-10 w-20 rounded-2xl  border-t-cyan-400 border-r-blue-500 border-l-yellow-300 border-b-yellow-300 bg-white font-bold text-olx-green shadow-xl ">
+       <i className="fa-solid fa-plus"></i> SELL
+      </button>
     </div>
   );
 };
