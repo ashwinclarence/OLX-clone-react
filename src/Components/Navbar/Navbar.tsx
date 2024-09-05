@@ -3,7 +3,7 @@ import olxLogo from "../../assets/OLX_green_logo.svg";
 
 const Navbar = () => {
   return (
-    <div className="p-4 bg-olx-gray flex justify-between items-center sticky top-0 w-full">
+    <div className="p-4 bg-olx-gray flex justify-between items-center sticky top-0 w-full z-50">
       <div className="overflow-hidden">
         <img src={olxLogo} className="w-14" />
       </div>
