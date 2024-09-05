@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         'olx-green': '#002F34',
-        'olx-gray':'#EBEEEF',
+        'olx-gray':'#e1e2e3',
       }
     },
   },
