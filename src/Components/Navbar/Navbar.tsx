@@ -4,9 +4,9 @@ import olxLogo from "../../assets/OLX_green_logo.svg";
 const Navbar = () => {
   return (
     <div className="p-4 bg-olx-gray flex justify-between items-center sticky top-0 w-full z-50">
-      <div className="overflow-hidden">
-        <img src={olxLogo} className="w-14" />
-      </div>
+      <Link to='/' className="overflow-hidden">
+        <img src={olxLogo} className="w-14 cursor-pointer"  />
+      </Link>
       {/* location bar */}
       <div className="border-2 border-olx-green flex items-center justify-between p-2 gap-3 rounded bg-white">
         <i className="fa-solid fa-magnifying-glass"></i>
