@@ -1,9 +1,11 @@
 import Banner from '../Components/Banner/Banner'
+import Category from '../Components/Category/Category'
 
 const HomePage = () => {
   return (
     <div>
-      <Banner/>
+          <Category/>
+          <Banner />
     </div>
   )
 }
