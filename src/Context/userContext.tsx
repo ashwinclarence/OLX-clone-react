@@ -19,7 +19,7 @@ const userContext = createContext<userContextType | undefined>(undefined);
 
 export function UserContextProvider({ children }: { children: React.ReactNode }) {
     
-    const [user, setUser] = useState<userType|null|undefined>(undefined)
+    const [user, setUser] = useState<userType | null | undefined>(undefined)
     const [loading, setLoading] = useState<boolean>(true)
     
 

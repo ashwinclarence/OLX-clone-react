@@ -1,7 +1,27 @@
 import loginImage from "../../assets/loginEntryPointPost.webp";
 import googleIcon from "../../assets/icons8-google.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../Firebase/FireBaseConfig";
 const Login = () => {
+
+  const navigate = useNavigate();
+
+  // function to handle google login
+  const handleGoogleLogin = async() => {
+    try {
+
+      const userCred = await signInWithPopup(auth, provider);
+
+      if (userCred) {
+        console.log(userCred)
+        navigate('/')
+      }
+      
+    } catch (err) {
+      console.log("Error on google auth firebase ",err)
+    }
+  }
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col border-2 gap-5 p-4 rounded items-center w-96">
@@ -18,7 +38,7 @@ const Login = () => {
         <button className="border-2 w-full h-10 hover:border-4 border-black duration-75  ps-4 font-semibold">
           <i className="fa-solid fa-mobile-screen"></i> Continue with Phone
         </button>
-        <button className="border w-full h-10 hover:bg-blue-100 ps-4 font-semibold flex justify-center items-center ease-in-out duration-200">
+        <button className="border w-full h-10 hover:bg-blue-100 ps-4 font-semibold flex justify-center items-center ease-in-out duration-200" onClick={handleGoogleLogin}>
           <img src={googleIcon} className="w-8" /> Continue with Phone
         </button>
         <h2 className="font-semibold">OR</h2>
