@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { getDocs } from "firebase/firestore";
-import { Product } from "../../Types/Types";
+import { ProductType } from "../../Types/Types";
 import { productGetRef } from "../../Firebase/FireBaseConfig";
 
 const ProductRow = () => {
-  const [products, setProducts] = useState<Product[] | undefined>(undefined); // Correct state type
+  const [products, setProducts] = useState<ProductType[] | undefined>(undefined); // Correct state type
 
   useEffect(() => {
     async function getCollection() {
       try {
         const querySnapshot = await getDocs(productGetRef);
-        const productList: Product[] = querySnapshot.docs.map((doc) => {
+        const productList: ProductType[] = querySnapshot.docs.map((doc) => {
           console.log(doc.data());
-          const data = doc.data() as Product;
+          const data = doc.data() as ProductType;
           const id = doc.id; // Get the document ID
           return { ...data, id }; // Include the ID in the returned object
         });

@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../Firebase/FireBaseConfig";
 import { useNavigate, useParams } from "react-router-dom";
-import { Product } from "../../Types/Types";
+import { ProductType } from "../../Types/Types";
 import { toast } from "react-toastify";
 import Loading from "../Loading/Loading";
 
 const ProductView = () => {
   const { id } = useParams<{ id: string }>();
-  const [product, setProducts] = useState<Product>();
+  const [product, setProducts] = useState<ProductType>();
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const ProductView = () => {
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
-            setProducts(docSnap.data() as Product);
+            setProducts(docSnap.data() as ProductType);
             setLoading(false);
           } else {
             toast.error("No such document");

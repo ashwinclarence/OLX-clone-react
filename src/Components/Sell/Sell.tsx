@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import noImage from "../../assets/noImage.jpeg";
-import { Category, Product } from "../../Types/Types";
+import { Category, ProductType } from "../../Types/Types";
 import userAuth from "../../Context/userContext";
 import { setDoc } from "firebase/firestore";
 import { productRef, storage } from "../../Firebase/FireBaseConfig";
@@ -46,7 +46,7 @@ const Sell = () => {
           const imageUrl = await getDownloadURL(imageRef);
   
           // Prepare product data
-          const dataToInsert: Product = {
+          const dataToInsert: ProductType = {
             title: title,
             userID: user?.uid || "",
             description: description,

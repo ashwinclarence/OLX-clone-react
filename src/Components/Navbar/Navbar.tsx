@@ -45,9 +45,9 @@ const Navbar = () => {
         English <i className="fa-solid fa-chevron-down "></i>
       </h2>
       {user ? (
-        <button className="flex gap-4 items-center" onClick={handleLogout}>
+        <button className="flex gap-4 items-center" >
           <b>{ user.name}</b>
-          <i className="fa-solid fa-arrow-right-from-bracket text-xl font-semibold"></i>
+          <i className="fa-solid fa-arrow-right-from-bracket text-xl font-semibold" onClick={handleLogout}></i>
         </button>
       ) : (
         <Link to="/login" className="text-xl font-semibold">

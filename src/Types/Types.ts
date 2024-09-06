@@ -13,7 +13,7 @@ export type Category =
 
 
 
-export type Product = {
+export type ProductType = {
     id?: string;
     userID: string;
     title: string;
