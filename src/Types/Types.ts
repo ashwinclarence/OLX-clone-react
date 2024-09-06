@@ -14,6 +14,7 @@ export type Category =
 
 
 export type Product = {
+    id?: string;
     userID: string;
     title: string;
     description: string;

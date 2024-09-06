@@ -33,3 +33,4 @@ export const provider = new GoogleAuthProvider();
 
 // product ref 
 export const productRef = doc(collection(db, "products"));
+export const productGetRef = (collection(db, "products"))
