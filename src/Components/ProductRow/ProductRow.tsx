@@ -69,8 +69,8 @@ const ProductRow = () => {
   return (
       <div className="container mx-auto my-20">
           <div className='grid grid-cols-4 gap-8'>
-          {products.map((product) => (
-          <ProductCard name={product.name} description={product.description} image={product.image} price={product.price}/>
+          {products.map((product,index) => (
+          <ProductCard key={index} name={product.name} description={product.description} image={product.image} price={product.price}/>
       ))}
     </div>
     </div>

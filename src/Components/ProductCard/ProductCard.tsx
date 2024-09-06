@@ -5,7 +5,6 @@ type ProductCard = {
   price: number;
 };
 const ProductCard = ({ description, image, name, price }: ProductCard) => {
-  console.log(image);
   return (
     <div className="max-w-xs bg-white rounded-lg overflow-hidden border-2 cursor-pointer">
       <div className="h-80 relative">

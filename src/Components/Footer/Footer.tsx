@@ -7,7 +7,7 @@ import mobilityOutlook from "../../assets/mobility.svg";
 const Footer = () => {
   return (
     <>
-      <div className=" bg-olx-gray  py-8">
+      <div className=" bg-olx-gray  py-8 shadow-inner">
         <div className="container mx-auto flex justify-around flex-wrap">
         <ul className="capitalize">
           <li className="uppercase font-semibold mb-4">Popular locations</li>

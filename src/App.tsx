@@ -6,6 +6,8 @@ import PageNotFound from "./Pages/PageNotFound";
 import LoginPage from "./Pages/LoginPage";
 import userAuth from "./Context/userContext";
 import { FadeLoader } from "react-spinners";
+import ProductDetailPage from "./Pages/ProductDetailPage";
+import SellProductPage from "./Pages/SellProductPage";
 const App = () => {
   const { loading } = userAuth();
 
@@ -22,6 +24,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/product-view/:id" element={<ProductDetailPage />} />
+        <Route path="/sell" element={<SellProductPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />

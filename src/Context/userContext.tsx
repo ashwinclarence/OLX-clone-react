@@ -25,6 +25,7 @@ export function UserContextProvider({ children }: { children: React.ReactNode })
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
+            console.log(user)
             if (user) {
                 setUser({
                     email: user.email ? user.email : "",

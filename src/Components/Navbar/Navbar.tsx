@@ -1,23 +1,21 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import olxLogo from "../../assets/OLX_green_logo.svg";
 import userAuth from "../../Context/userContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../Firebase/FireBaseConfig";
 
 const Navbar = () => {
-  const { user, loading } = userAuth();
-  const navigate = useNavigate();
+  const { user } = userAuth();
 
   const handleLogout = () => {
-    signOut(auth).then(() => {
-      console.log("sign out");
-      
-      }).catch((error) => {
-        
-        console.log("Error on logout call",error);
+    signOut(auth)
+      .then(() => {
+        console.log("sign out");
       })
-      
-  }
+      .catch((error) => {
+        console.log("Error on logout call", error);
+      });
+  };
   return (
     <div className="p-4 bg-olx-gray flex justify-between items-center sticky top-0 w-full z-50">
       <Link to="/" className="overflow-hidden">
@@ -47,8 +45,9 @@ const Navbar = () => {
         English <i className="fa-solid fa-chevron-down "></i>
       </h2>
       {user ? (
-        <button className="text-xl font-semibold" onClick={handleLogout}>
-          <i className="fa-solid fa-arrow-right-from-bracket"></i>
+        <button className="flex gap-4 items-center" onClick={handleLogout}>
+          <b>{ user.name}</b>
+          <i className="fa-solid fa-arrow-right-from-bracket text-xl font-semibold"></i>
         </button>
       ) : (
         <Link to="/login" className="text-xl font-semibold">
