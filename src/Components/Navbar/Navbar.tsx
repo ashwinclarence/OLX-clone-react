@@ -55,9 +55,9 @@ const Navbar = () => {
         </Link>
       )}
 
-      <button className="border-4 h-10 w-20 rounded-2xl  border-t-cyan-400 border-r-blue-500 border-l-yellow-300 border-b-yellow-300 bg-white font-bold text-olx-green shadow-xl ">
+      <Link to='/sell' className="flex justify-center items-center gap-2 border-4 h-10 w-20 rounded-2xl  border-t-cyan-400 border-r-blue-500 border-l-yellow-300 border-b-yellow-300 bg-white font-bold text-olx-green shadow-xl ">
         <i className="fa-solid fa-plus"></i> SELL
-      </button>
+      </Link>
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 type ProductCard = {
   name: string;
   description: string;
@@ -6,7 +8,7 @@ type ProductCard = {
 };
 const ProductCard = ({ description, image, name, price }: ProductCard) => {
   return (
-    <div className="max-w-xs bg-white rounded-lg overflow-hidden border-2 cursor-pointer">
+    <Link to='/product-view/123' className="max-w-xs bg-white rounded-lg overflow-hidden border-2 cursor-pointer">
       <div className="h-80 relative">
         <div className="rounded-full bg-white border absolute right-2 top-2 h-8 w-8 flex items-center justify-center ">
           <i className="fa-solid fa-heart"></i>
@@ -26,7 +28,7 @@ const ProductCard = ({ description, image, name, price }: ProductCard) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

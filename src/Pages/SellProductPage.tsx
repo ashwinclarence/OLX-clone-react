@@ -1,8 +1,9 @@
+import Sell from "../Components/Sell/Sell"
 
 const SellProductPage = () => {
   return (
     <div>
-        
+        <Sell/>
     </div>
   )
 }

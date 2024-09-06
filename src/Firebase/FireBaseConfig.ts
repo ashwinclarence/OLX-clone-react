@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-
+import { collection, doc, getFirestore } from "firebase/firestore";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -11,7 +11,7 @@ const firebaseConfig = {
   storageBucket: "olx-clone-8f231.appspot.com",
   messagingSenderId: "945058189246",
   appId: "1:945058189246:web:96e45e6c53515d5a5873ef",
-  measurementId: "G-03XVW3TFV4"
+  measurementId: "G-03XVW3TFV4",
 };
 // const firebaseConfig1 = {
 //   apiKey: import.meta.env.VITE_FIREBASE_API,
@@ -23,14 +23,13 @@ const firebaseConfig = {
 //   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENTID
 // };
 
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-
 export const auth = getAuth(app);
-
+export const db = getFirestore(app);
 export const provider = new GoogleAuthProvider();
 
 
-
+// product ref 
+export const productRef = doc(collection(db, "products"));

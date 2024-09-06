@@ -8,6 +8,8 @@ import userAuth from "./Context/userContext";
 import { FadeLoader } from "react-spinners";
 import ProductDetailPage from "./Pages/ProductDetailPage";
 import SellProductPage from "./Pages/SellProductPage";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 const App = () => {
   const { loading } = userAuth();
 
@@ -21,6 +23,7 @@ const App = () => {
   return (
     <>
       <Navbar />
+      <ToastContainer/>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
