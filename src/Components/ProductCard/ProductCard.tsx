@@ -1,13 +1,9 @@
-import { Link } from "react-router-dom";
-
-type ProductCard = {
-  name: string;
-  description: string;
-  image: string;
-  price: number;
-  place: string;
-  id: string|undefined;
-};
+import { doc, getDoc } from "firebase/firestore";
+import { ProductCardType, ProductType } from "../../Types/Types";
+import { db } from "../../Firebase/FireBaseConfig";
+import { useProductContext } from "../../Context/ProductContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ProductCard = ({
   description,
@@ -15,11 +11,39 @@ const ProductCard = ({
   name,
   price,
   place,
-  id
-}: ProductCard) => {
+  id,
+}: ProductCardType) => {
+
+  const { setProducts } = useProductContext()
+  const navigate=useNavigate()
+  
+  const handleProductDetailView = async (id: string | undefined) => {
+    if (id) {
+      try {
+        const docRef = doc(db, "products", id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setProducts(docSnap.data() as ProductType);
+          navigate('/product-view')
+        } else {
+          toast.error("No such document");
+          console.error("No such document!");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error fetching product: ", error);
+        toast.error("Failed to fetch product details");
+      }
+    } else {
+      toast.error("Cannot find the product details");
+      navigate("/");
+    }
+  };
+
   return (
-    <Link
-      to={`/product-view/${id}`}
+    <div
+      onClick={(e) => handleProductDetailView(id)}
       className="max-w-xs bg-white rounded-lg overflow-hidden border-2 cursor-pointer"
     >
       <div className="h-80 relative">
@@ -41,7 +65,7 @@ const ProductCard = ({
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

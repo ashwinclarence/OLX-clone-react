@@ -23,3 +23,12 @@ export type ProductType = {
     category: Category;
     image: string;
 }
+
+export type ProductCardType = {
+  name: string;
+  description: string;
+  image: string;
+  price: number;
+  place: string;
+  id: string | undefined;
+};

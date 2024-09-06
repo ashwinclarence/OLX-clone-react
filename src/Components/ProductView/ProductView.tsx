@@ -1,46 +1,23 @@
 import olxLogo from "../../assets/olx.svg";
 import map from "../../assets/map.png";
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../Firebase/FireBaseConfig";
-import { useNavigate, useParams } from "react-router-dom";
-import { ProductType } from "../../Types/Types";
-import { toast } from "react-toastify";
 import Loading from "../Loading/Loading";
+import { useProductContext } from "../../Context/ProductContext";
 
 const ProductView = () => {
-  const { id } = useParams<{ id: string }>();
-  const [product, setProducts] = useState<ProductType>();
   const [loading, setLoading] = useState<boolean>(true);
-  const navigate = useNavigate();
+
+  const {product}=useProductContext()
+
 
   useEffect(() => {
-    async function getProduct() {
-      if (id) {
-        try {
-          const docRef = doc(db, "products", id);
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            setProducts(docSnap.data() as ProductType);
-            setLoading(false);
-          } else {
-            toast.error("No such document");
-            console.error("No such document!");
-            navigate('/')
-          }
-        } catch (error) {
-          console.error("Error fetching product: ", error);
-          toast.error("Failed to fetch product details");
-        }
-      } else {
-        toast.error("Cannot find the product details");
-        navigate("/");
-      }
+    if (product) {
+      setLoading(false)
     }
+    
+  },[product])
 
-    getProduct();
-  }, [id, navigate]);
+  
   if (loading) {
     return <Loading />;
   }

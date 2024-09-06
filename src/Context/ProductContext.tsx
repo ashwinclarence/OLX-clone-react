@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { ProductType } from "../Types/Types";
 
 type ProductContextType = {
-  product: ProductType | null | undefined;
+  product: ProductType | null;
   setProducts: React.Dispatch<React.SetStateAction<ProductType | null>>;
 };
 
@@ -13,7 +13,7 @@ export function ProductContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [product, setProducts] = useState<ProductType | null>(null);
+  const [product, setProducts] = useState<ProductType | null>(null); // Set initial state to null
 
   return (
     <ProductContext.Provider value={{ product, setProducts }}>
@@ -22,12 +22,12 @@ export function ProductContextProvider({
   );
 }
 
-export function ProductDetailContext() {
-  const context = useContext(ProductContext);
-
-  if (context === undefined || context === null) {
-    throw new Error("Context data is not available");
-  }
+export function useProductContext() {
+    const context = useContext(ProductContext);
+    
+    if (context === undefined) {
+        throw new Error("no product context");
+    }
 
   return context;
 }
