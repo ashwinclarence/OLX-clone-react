@@ -3,96 +3,109 @@ import noImage from "../../assets/noImage.jpeg";
 import { Category, Product } from "../../Types/Types";
 import userAuth from "../../Context/userContext";
 import { setDoc } from "firebase/firestore";
-import { productRef } from "../../Firebase/FireBaseConfig";
+import { productRef, storage } from "../../Firebase/FireBaseConfig";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Sell = () => {
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
-  const [location, setLocation] = useState<string>("");
-  const [category, setCategory] = useState<Category>();
-  const [image, setImage] = useState<string>(noImage);
+    const [title, setTitle] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [price, setPrice] = useState<number>(0);
+    const [location, setLocation] = useState<string>("");
+    const [category, setCategory] = useState<Category>();
+    const [imageFile, setImageFile] = useState<File | null>(null); // Store file instead of URL
+    const [imagePreview, setImagePreview] = useState<string>(noImage); // Separate preview
     const { user } = userAuth();
     const navigate = useNavigate();
-
-  // function to handle the image preview to the screen
-  const handleImagePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
-    try {
+  
+    // function to handle the image preview to the screen
+    const handleImagePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.files && event.target.files[0]) {
-        setImage(URL.createObjectURL(event.target.files[0]));
+        const selectedImage = event.target.files[0];
+        setImageFile(selectedImage);
+        setImagePreview(URL.createObjectURL(selectedImage));
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // function for sell product form submit
-  const handleSellProductSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    try {
+    };
+  
+    // function for sell product form submit
+    const handleSellProductSubmit = async (
+      event: React.FormEvent<HTMLFormElement>
+    ) => {
       event.preventDefault();
-      let dataToInsert: Product = {
-        title: title,
-        userID: user?.uid || "",
-        description: description,
-        price: price,
-        location: location,
-        category: category as Category,
-        image: image,
-      };
-      if (validateSellForm()) {
-        //add the product details to
-          setDoc(productRef, dataToInsert).then(() => {
-              toast.success("The product has been successfully listed and is now open for buyers.");
-              navigate('/')
-          }).catch((error) => {
-             toast.error(error.message)
-         })
-      } else {
-        console.log("notin");
+  
+      if (!validateSellForm()) return;
+  
+      try {
+        if (imageFile) {
+          // Upload the image
+          const imageRef = ref(storage, `images/${user?.uid}/${Date.now()}`);
+          await uploadBytes(imageRef, imageFile);
+  
+          // Get image URL
+          const imageUrl = await getDownloadURL(imageRef);
+  
+          // Prepare product data
+          const dataToInsert: Product = {
+            title: title,
+            userID: user?.uid || "",
+            description: description,
+            price: price,
+            location: location,
+            category: category as Category,
+            image: imageUrl, 
+          };
+  
+          // Add product to Firestore
+          await setDoc(productRef, dataToInsert);
+  
+          toast.success("The product has been successfully listed!");
+          navigate("/");
+        } else {
+          toast.error("Please upload an image before submitting.");
+        }
+      } catch (error) {
+        console.error("Error listing product:", error);
+        toast.error("Failed to list product. Try again.");
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    };
+  
+    // function to validate the form fields
+    const validateSellForm = (): boolean => {
+      if (!category) {
+        toast.error("Please select a category");
+        return false;
+      }
+  
+      if (title.trim() === "") {
+        toast.error("Please enter a valid title");
+        return false;
+      }
+  
+      if (description.trim() === "") {
+        toast.error("Please enter a valid description");
+        return false;
+      }
+  
+      if (isNaN(Number(price)) || Number(price) <= 0) {
+        toast.error("Please enter a valid price");
+        return false;
+      }
+  
+      if (location.trim() === "") {
+        toast.error("Please enter a valid location");
+        return false;
+      }
+  
+      if (!imageFile) {
+        toast.error("Please upload at least one image");
+        return false;
+      }
+  
+      return true;
+    };
+  
 
-  // function to validate the form field
-  function validateSellForm(): boolean {
-    if (!category) {
-      toast.error("Please select a category");
-      return false;
-    }
-
-    if (title.trim() === "") {
-      toast.error("Please enter a valid title");
-      return false;
-    }
-
-    if (description.trim() === "") {
-      toast.error("Please enter a valid description");
-      return false;
-    }
-
-    if (isNaN(Number(price)) || Number(price) <= 0) {
-      toast.error("Please enter a valid price");
-      return false;
-    }
-
-    if (location.trim() === "") {
-      toast.error("Please enter a valid location");
-      return false;
-    }
-
-    if (!image || image === noImage) {
-      toast.error("Please upload at least one image");
-      return false;
-    }
-
-    return true;
-  }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="border shadow-md w-11/12 md:w-4/5 rounded-md p-8 bg-white">
@@ -113,6 +126,8 @@ const Sell = () => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value as Category)}
               >
+                <option value="" disabled>choose a category
+                </option>
                 <option value="Cars" defaultChecked>
                   Cars
                 </option>
@@ -212,7 +227,7 @@ const Sell = () => {
             {/* Image Preview */}
             <div className="mt-4 w-full h-64 border rounded-md overflow-hidden">
               <img
-                src={image}
+                src={imagePreview}
                 alt="Preview"
                 className="w-full h-full object-cover"
               />

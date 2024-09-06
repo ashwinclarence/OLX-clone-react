@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { collection, doc, getFirestore } from "firebase/firestore";
+import {  getStorage } from "firebase/storage";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -34,3 +35,10 @@ export const provider = new GoogleAuthProvider();
 // product ref 
 export const productRef = doc(collection(db, "products"));
 export const productGetRef = (collection(db, "products"))
+
+
+
+// storage ref
+export const storage = getStorage();
+
+

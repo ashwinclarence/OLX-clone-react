@@ -1,4 +1,3 @@
-import sampleImage from "../../assets/pro1.webp";
 import olxLogo from "../../assets/olx.svg";
 import map from "../../assets/map.png";
 import { useEffect, useState } from "react";
@@ -23,13 +22,16 @@ const ProductView = () => {
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
-            setProducts(docSnap.data() as Product); 
-            setLoading(false)
+            setProducts(docSnap.data() as Product);
+            setLoading(false);
           } else {
+            toast.error("No such document");
             console.error("No such document!");
+            navigate('/')
           }
         } catch (error) {
           console.error("Error fetching product: ", error);
+          toast.error("Failed to fetch product details");
         }
       } else {
         toast.error("Cannot find the product details");
@@ -38,12 +40,9 @@ const ProductView = () => {
     }
 
     getProduct();
-  }, [id]); 
-
+  }, [id, navigate]);
   if (loading) {
-    return (
-      <Loading/>
-    )
+    return <Loading />;
   }
 
   return (
@@ -53,7 +52,11 @@ const ProductView = () => {
         <div className="flex flex-col w-[70vw] ">
           <div className="border bg-black rounded-md h-[30rem] flex justify-center relative">
             <i className="fa-solid fa-chevron-left text-white text-2xl absolute left-4 top-1/2 cursor-pointer"></i>
-            <img src={product?.image} alt="" className="object-contain w-full" />
+            <img
+              src={product?.image}
+              alt=""
+              className="object-contain w-full"
+            />
             <img
               src={olxLogo}
               className="absolute right-2 bottom-2 z-10 w-12 "
@@ -65,24 +68,20 @@ const ProductView = () => {
             <p> {product?.title}</p>
             <hr />
             <h2 className="text-lg font-bold">Description</h2>
-            <p>
-              {product?.description}
-            </p>
+            <p>{product?.description}</p>
           </div>
         </div>
         {/* right side */}
         <div>
           <div className="border border-gray-500 rounded-md w-[30vw] p-4 flex flex-col gap-4 bg-white">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">&#8377; { product?.price}</h2>
+              <h2 className="text-2xl font-bold">&#8377; {product?.price}</h2>
               <div className=" flex gap-4">
                 <i className="fa-solid fa-share-nodes text-2xl cursor-pointer"></i>
                 <i className="fa-regular fa-heart text-2xl cursor-pointer"></i>
               </div>
             </div>
-            <h2>
-             {product?.title}
-            </h2>
+            <h2>{product?.title}</h2>
             <div className="flex justify-between text-sm">
               <p>{product?.category}</p>
               <p>12 June 2024</p>
@@ -101,9 +100,7 @@ const ProductView = () => {
             </div>
           </div>
           <div className="border border-gray-500 rounded-md w-[30vw] p-4  bg-white  mt-4">
-            <h2 className="text-sm">
-              {product?.location}
-            </h2>
+            <h2 className="text-sm">{product?.location}</h2>
           </div>
           <div className="border border-gray-500 rounded-md w-[30vw] p-4 flex flex-col gap-4 bg-white mt-4">
             <img src={map} alt="" className="" />
