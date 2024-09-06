@@ -48,7 +48,7 @@ const Navbar = () => {
       </h2>
       {user ? (
         <button className="text-xl font-semibold" onClick={handleLogout}>
-          Logout
+          <i className="fa-solid fa-arrow-right-from-bracket"></i>
         </button>
       ) : (
         <Link to="/login" className="text-xl font-semibold">

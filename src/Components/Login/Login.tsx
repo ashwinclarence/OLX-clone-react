@@ -39,7 +39,7 @@ const Login = () => {
           <i className="fa-solid fa-mobile-screen"></i> Continue with Phone
         </button>
         <button className="border w-full h-10 hover:bg-blue-100 ps-4 font-semibold flex justify-center items-center ease-in-out duration-200" onClick={handleGoogleLogin}>
-          <img src={googleIcon} className="w-8" /> Continue with Phone
+          <img src={googleIcon} className="w-8" /> Continue with google
         </button>
         <h2 className="font-semibold">OR</h2>
         <Link to="/signup" className="underline font-semibold ease-in-out duration-200">
