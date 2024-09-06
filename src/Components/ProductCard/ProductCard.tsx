@@ -6,6 +6,7 @@ type ProductCard = {
   image: string;
   price: number;
   place: string;
+  id: string|undefined;
 };
 
 const ProductCard = ({
@@ -14,10 +15,11 @@ const ProductCard = ({
   name,
   price,
   place,
+  id
 }: ProductCard) => {
   return (
     <Link
-      to="/product-view/123"
+      to={`/product-view/${id}`}
       className="max-w-xs bg-white rounded-lg overflow-hidden border-2 cursor-pointer"
     >
       <div className="h-80 relative">

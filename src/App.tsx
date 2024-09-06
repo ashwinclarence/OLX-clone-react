@@ -5,19 +5,17 @@ import HomePage from "./Pages/HomePage";
 import PageNotFound from "./Pages/PageNotFound";
 import LoginPage from "./Pages/LoginPage";
 import userAuth from "./Context/userContext";
-import { FadeLoader } from "react-spinners";
 import ProductDetailPage from "./Pages/ProductDetailPage";
 import SellProductPage from "./Pages/SellProductPage";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
+import Loading from "./Components/Loading/Loading";
 const App = () => {
   const { loading } = userAuth();
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <FadeLoader color="#002F34" />
-      </div>
+      <Loading/>
     )
   }
   return (

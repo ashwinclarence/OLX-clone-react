@@ -38,6 +38,7 @@ const ProductRow = () => {
             image={product.image}
             price={product.price}
             place={product.location}
+            id={product.id}
           />
         ))}
       </div>
