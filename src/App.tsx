@@ -15,7 +15,7 @@ const App = () => {
 
   if (loading) {
     return (
-      <Loading/>
+      <Loading transparent={false} />
     )
   }
   return (
@@ -23,6 +23,7 @@ const App = () => {
       <Navbar />
       <ToastContainer/>
       <Routes>
+
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/product-view" element={<ProductDetailPage />} />

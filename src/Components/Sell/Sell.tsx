@@ -7,104 +7,111 @@ import { productRef, storage } from "../../Firebase/FireBaseConfig";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import Loading from "../Loading/Loading";
 
 const Sell = () => {
-    const [title, setTitle] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [price, setPrice] = useState<number>(0);
-    const [location, setLocation] = useState<string>("");
-    const [category, setCategory] = useState<Category>();
-    const [imageFile, setImageFile] = useState<File | null>(null); // Store file instead of URL
-    const [imagePreview, setImagePreview] = useState<string>(noImage); // Separate preview
-    const { user } = userAuth();
-    const navigate = useNavigate();
-  
-    // function to handle the image preview to the screen
-    const handleImagePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (event.target.files && event.target.files[0]) {
-        const selectedImage = event.target.files[0];
-        setImageFile(selectedImage);
-        setImagePreview(URL.createObjectURL(selectedImage));
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
+  const [location, setLocation] = useState<string>("");
+  const [category, setCategory] = useState<Category>();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>(noImage);
+  const [loading, setLoading] = useState<boolean>(false);
+  const { user } = userAuth();
+  const navigate = useNavigate();
+
+  // function to handle the image preview to the screen
+  const handleImagePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const selectedImage = event.target.files[0];
+      setImageFile(selectedImage);
+      setImagePreview(URL.createObjectURL(selectedImage));
+    }
+  };
+
+  // function for sell product form submit
+  const handleSellProductSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+    if (!validateSellForm()) return;
+
+    try {
+      setLoading(() => true);
+      if (imageFile) {
+        // Upload the image
+        const imageRef = ref(storage, `images/${user?.uid}/${Date.now()}`);
+        await uploadBytes(imageRef, imageFile);
+
+        // Get image URL
+        const imageUrl = await getDownloadURL(imageRef);
+
+        // Prepare product data
+        const dataToInsert: ProductType = {
+          title: title,
+          userID: user?.uid || "",
+          description: description,
+          price: price,
+          location: location,
+          category: category as Category,
+          image: imageUrl,
+          date: Date.now(),
+        };
+
+        // Add product to Firestore
+        await setDoc(productRef, dataToInsert);
+
+        toast.success("The product has been successfully listed!");
+        setLoading(() => false);
+        navigate("/");
+      } else {
+        toast.error("Please upload an image before submitting.");
       }
-    };
-  
-    // function for sell product form submit
-    const handleSellProductSubmit = async (
-      event: React.FormEvent<HTMLFormElement>
-    ) => {
-      event.preventDefault();
-  
-      if (!validateSellForm()) return;
-  
-      try {
-        if (imageFile) {
-          // Upload the image
-          const imageRef = ref(storage, `images/${user?.uid}/${Date.now()}`);
-          await uploadBytes(imageRef, imageFile);
-  
-          // Get image URL
-          const imageUrl = await getDownloadURL(imageRef);
-  
-          // Prepare product data
-          const dataToInsert: ProductType = {
-            title: title,
-            userID: user?.uid || "",
-            description: description,
-            price: price,
-            location: location,
-            category: category as Category,
-            image: imageUrl, 
-          };
-  
-          // Add product to Firestore
-          await setDoc(productRef, dataToInsert);
-  
-          toast.success("The product has been successfully listed!");
-          navigate("/");
-        } else {
-          toast.error("Please upload an image before submitting.");
-        }
-      } catch (error) {
-        console.error("Error listing product:", error);
-        toast.error("Failed to list product. Try again.");
-      }
-    };
-  
-    // function to validate the form fields
-    const validateSellForm = (): boolean => {
-      if (!category) {
-        toast.error("Please select a category");
-        return false;
-      }
-  
-      if (title.trim() === "") {
-        toast.error("Please enter a valid title");
-        return false;
-      }
-  
-      if (description.trim() === "") {
-        toast.error("Please enter a valid description");
-        return false;
-      }
-  
-      if (isNaN(Number(price)) || Number(price) <= 0) {
-        toast.error("Please enter a valid price");
-        return false;
-      }
-  
-      if (location.trim() === "") {
-        toast.error("Please enter a valid location");
-        return false;
-      }
-  
-      if (!imageFile) {
-        toast.error("Please upload at least one image");
-        return false;
-      }
-  
-      return true;
-    };
-  
+    } catch (error) {
+      console.error("Error listing product:", error);
+      toast.error("Failed to list product. Try again.");
+    }
+  };
+
+  // function to validate the form fields
+  const validateSellForm = (): boolean => {
+    if (!category) {
+      toast.error("Please select a category");
+      return false;
+    }
+
+    if (title.trim() === "") {
+      toast.error("Please enter a valid title");
+      return false;
+    }
+
+    if (description.trim() === "") {
+      toast.error("Please enter a valid description");
+      return false;
+    }
+
+    if (isNaN(Number(price)) || Number(price) <= 0) {
+      toast.error("Please enter a valid price");
+      return false;
+    }
+
+    if (location.trim() === "") {
+      toast.error("Please enter a valid location");
+      return false;
+    }
+
+    if (!imageFile) {
+      toast.error("Please upload at least one image");
+      return false;
+    }
+
+    return true;
+  };
+
+  if (loading) {
+    return <Loading transparent={true} />;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -126,7 +133,8 @@ const Sell = () => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value as Category)}
               >
-                <option value="" disabled>choose a category
+                <option value="" disabled>
+                  choose a category
                 </option>
                 <option value="Cars" defaultChecked>
                   Cars

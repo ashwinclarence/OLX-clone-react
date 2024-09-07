@@ -21,14 +21,7 @@ export type ProductType = {
     price: number;
     location: string;
     category: Category;
-    image: string;
+  image: string;
+  date: number;
 }
 
-export type ProductCardType = {
-  name: string;
-  description: string;
-  image: string;
-  price: number;
-  place: string;
-  id: string | undefined;
-};

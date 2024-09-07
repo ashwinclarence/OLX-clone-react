@@ -19,8 +19,11 @@ const ProductView = () => {
 
   
   if (loading) {
-    return <Loading />;
+    return <Loading transparent={false} />;
   }
+
+
+  const calculatedDate = new Date(product?.date);
 
   return (
     <div className=" py-10 bg-olx-gray">
@@ -61,7 +64,7 @@ const ProductView = () => {
             <h2>{product?.title}</h2>
             <div className="flex justify-between text-sm">
               <p>{product?.category}</p>
-              <p>12 June 2024</p>
+              <p>{calculatedDate.toLocaleDateString()}</p>
             </div>
           </div>
           <div className="border border-gray-500 rounded-md w-[30vw] p-4 flex flex-col gap-4 bg-white mt-4">

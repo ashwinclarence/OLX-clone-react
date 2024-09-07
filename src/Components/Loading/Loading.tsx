@@ -1,8 +1,12 @@
 import { FadeLoader } from 'react-spinners'
 
-const Loading = () => {
+type LoadingType = {
+  transparent:boolean
+}
+
+const Loading = ({transparent}:LoadingType) => {
   return (
-      <div className="flex justify-center items-center h-screen">
+    <div className={`flex justify-center items-center h-screen  ${transparent&& 'bg-transparent'} `}>
         <FadeLoader color="#002F34" />
       </div>
   )
